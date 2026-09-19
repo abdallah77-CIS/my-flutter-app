@@ -1,0 +1,57 @@
+name: Build Android APK
+
+# Runs on every push, and can be started manually from the Actions tab.
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Show Flutter version
+        run: flutter --version
+
+      # This repo ships only lib/ + pubspec.yaml, so the android/ platform
+      # folder has to be generated before it can be built.
+      - name: Generate Android platform folder
+        run: flutter create --platforms=android .
+
+      # The generated manifest has neither the INTERNET permission nor the
+      # cleartext-HTTP config, and without both the app builds fine but every
+      # API call fails silently on Android 9+.
+      - name: Apply Android network configuration
+        run: bash tool/patch_android.sh
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+        continue-on-error: true
+
+      - name: Build release APK
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: hematix-donor-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error

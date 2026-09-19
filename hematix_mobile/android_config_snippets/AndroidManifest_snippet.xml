@@ -1,0 +1,24 @@
+<!--
+  Edits to make in: android/app/src/main/AndroidManifest.xml
+
+  1) Add the INTERNET permission ABOVE the <application> tag.
+  2) Add android:networkSecurityConfig to the existing <application> tag
+     (keep all the attributes Flutter already generated there).
+-->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- (1) Required for any HTTP call. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:label="Hematix"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher"
+        <!-- (2) Allows cleartext http:// to the dev backend only. -->
+        android:networkSecurityConfig="@xml/network_security_config">
+
+        <!-- ...leave the rest of the generated activity/meta-data as-is... -->
+
+    </application>
+</manifest>
