@@ -12,9 +12,9 @@ import 'dart:io';
 ///    (e.g. "192.168.1.14") and have the phone on the same Wi-Fi.
 class ApiConfig {
   /// Set this to your machine's LAN IP when testing on a physical device,
-  /// or to your deployed backend host in production. Leave null to use the
-  /// automatic emulator/simulator defaults below.
-  static const String? manualHost = null;
+  /// or to your deployed backend host in production. Set to null to fall back
+  /// to the automatic emulator/simulator defaults below.
+  static const String? manualHost = '192.168.1.15';
 
   static const int port = 8080;
 

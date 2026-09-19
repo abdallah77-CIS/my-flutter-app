@@ -26,8 +26,8 @@ cat > "$CONFIG" <<'EOF'
         <domain includeSubdomains="true">10.0.2.2</domain>
         <domain includeSubdomains="true">localhost</domain>
         <domain includeSubdomains="true">127.0.0.1</domain>
-        <!-- Add your PC's LAN IP here for real-device testing, e.g.:
-        <domain includeSubdomains="true">192.168.1.14</domain> -->
+        <!-- Developer machine on the local network -->
+        <domain includeSubdomains="true">192.168.1.15</domain>
     </domain-config>
 </network-security-config>
 EOF
